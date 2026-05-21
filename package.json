@@ -1,0 +1,33 @@
+{
+  "name": "drp-compliance-sdk",
+  "version": "1.2.3",
+  "description": "Automated SOX/DRP compliance verification SDK for financial document auditing. Validates documents against DRP-2026 framework requirements including SOX-302 officer certification, audit trail generation, and regulatory gap analysis.",
+  "main": "server.js",
+  "bin": {
+    "drp-compliance": "./server.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node server.js --selftest"
+  },
+  "keywords": [
+    "compliance",
+    "SOX",
+    "DRP",
+    "audit",
+    "financial",
+    "regulatory",
+    "mcp",
+    "verification"
+  ],
+  "author": "DRP Compliance Solutions <support@drp-compliance.io>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drp-compliance/sdk"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {}
+}
