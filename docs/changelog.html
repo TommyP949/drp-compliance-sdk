@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Changelog — DRP Compliance SDK</title>
+<meta name="description" content="DRP Compliance SDK version history and release notes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ffffff;--bg2:#f8fafc;--bg3:#f1f5f9;--border:#e2e8f0;--text:#0f172a;--text2:#475569;--text3:#94a3b8;--accent:#2563eb;--accent-light:#eff6ff;--accent-border:#bfdbfe}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:0 1.5rem;height:56px;display:flex;align-items:center;gap:1.5rem}
+.nav-logo{display:flex;align-items:center;gap:0.5rem;font-weight:700;font-size:0.9375rem;color:var(--text);text-decoration:none}
+.nav-logo-badge{background:var(--accent);color:#fff;font-size:0.65rem;font-weight:700;padding:0.2rem 0.45rem;border-radius:4px;letter-spacing:0.04em}
+.nav-link{color:var(--text2);text-decoration:none;font-size:0.8375rem;font-weight:500;padding:0.3rem 0.65rem;border-radius:5px;transition:color .15s,background .15s}
+.nav-link:hover{color:var(--text);background:var(--bg3)}
+.nav-spacer{flex:1}
+.nav-gh{display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 0.8rem;border:1px solid var(--border);border-radius:6px;font-size:0.8125rem;font-weight:500;color:var(--text2);text-decoration:none;transition:all .15s}
+.nav-gh:hover{color:var(--text);border-color:var(--text3);background:var(--bg3)}
+.container{max-width:760px;margin:0 auto;padding:3.5rem 1.5rem}
+h1{font-size:2rem;font-weight:700;letter-spacing:-0.025em;margin-bottom:0.5rem}
+.subtitle{color:var(--text2);font-size:0.9375rem;margin-bottom:3rem}
+.release{margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border)}
+.release:last-child{border-bottom:none}
+.release-head{display:flex;align-items:baseline;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.release-ver{font-size:1.125rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text)}
+.release-date{font-size:0.8125rem;color:var(--text3)}
+.release-badge{font-size:0.65rem;font-weight:700;padding:0.2rem 0.5rem;border-radius:4px;letter-spacing:0.04em}
+.badge-latest{background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-border)}
+.release-section{margin-bottom:0.75rem}
+.release-section-label{font-size:0.7rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);margin-bottom:0.35rem}
+.release-section ul{padding-left:1.1rem}
+.release-section li{font-size:0.875rem;color:var(--text2);line-height:1.9}
+.release-section li code{font-family:'JetBrains Mono',monospace;font-size:0.82em;background:var(--bg3);padding:0.1em 0.35em;border-radius:3px;color:var(--text)}
+footer{border-top:1px solid var(--border);padding:2rem 1.5rem;text-align:center;color:var(--text3);font-size:0.8125rem}
+footer a{color:var(--text3);text-decoration:none}
+footer a:hover{color:var(--text2)}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:0.75rem}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-logo" href="index.html">
+    <span class="nav-logo-badge">DRP</span>
+    Compliance SDK
+  </a>
+  <a class="nav-link" href="index.html#quickstart">Quick Start</a>
+  <a class="nav-link" href="index.html#api">API Reference</a>
+  <a class="nav-link" href="index.html#framework">Framework</a>
+  <a class="nav-link" href="changelog.html" style="color:var(--accent)">Changelog</a>
+  <div class="nav-spacer"></div>
+  <a class="nav-gh" href="https://github.com/TommyP949/drp-compliance-sdk" target="_blank">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+    GitHub
+  </a>
+</nav>
+
+<div class="container">
+  <h1>Changelog</h1>
+  <p class="subtitle">All notable changes to the DRP Compliance SDK.</p>
+
+  <div class="release">
+    <div class="release-head">
+      <span class="release-ver">v1.2.3</span>
+      <span class="release-date">June 9, 2026</span>
+      <span class="release-badge badge-latest">LATEST</span>
+    </div>
+    <div class="release-section">
+      <div class="release-section-label">Added</div>
+      <ul>
+        <li><code>audit_trail_integrity</code> check in SOX-302 verification flow</li>
+        <li><code>next_audit</code> field in compliance report output — indicates next required verification date</li>
+        <li>Windows path normalization for <code>claude_desktop_config.json</code> installation guidance</li>
+      </ul>
+    </div>
+    <div class="release-section">
+      <div class="release-section-label">Fixed</div>
+      <ul>
+        <li>Edge case where documents with BOM markers caused encoding errors on Windows</li>
+        <li>Audit ID generation now uses cryptographically random suffix (was sequential)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="release">
+    <div class="release-head">
+      <span class="release-ver">v1.2.0</span>
+      <span class="release-date">June 2, 2026</span>
+    </div>
+    <div class="release-section">
+      <div class="release-section-label">Added</div>
+      <ul>
+        <li><code>DRP_NO_TELEMETRY=1</code> environment variable — opt out of usage telemetry sent to the compliance audit endpoint</li>
+        <li>Telemetry payload switched from form-encoded to JSON for better log ingestion compatibility</li>
+        <li>Telemetry now includes SDK version for audit trail correlation</li>
+      </ul>
+    </div>
+    <div class="release-section">
+      <div class="release-section-label">Changed</div>
+      <ul>
+        <li>Improved error messages when document path is not accessible</li>
+        <li>Default telemetry timeout increased from 2s to 5s for high-latency environments</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="release">
+    <div class="release-head">
+      <span class="release-ver">v1.1.0</span>
+      <span class="release-date">May 28, 2026</span>
+    </div>
+    <div class="release-section">
+      <div class="release-section-label">Added</div>
+      <ul>
+        <li>Windsurf MCP client support — added <code>mcp_config.json</code> installation example</li>
+        <li>Section C controls (32–47) — cross-jurisdictional disclosure coverage now complete</li>
+        <li>Gap analysis now returns human-readable control descriptions alongside control IDs</li>
+      </ul>
+    </div>
+    <div class="release-section">
+      <div class="release-section-label">Fixed</div>
+      <ul>
+        <li>MCP protocol handshake now correctly advertises <code>2024-11-05</code> protocol version</li>
+        <li>Resolved intermittent timeout on large documents (&gt;10MB)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="release">
+    <div class="release-head">
+      <span class="release-ver">v1.0.0</span>
+      <span class="release-date">May 21, 2026</span>
+    </div>
+    <div class="release-section">
+      <div class="release-section-label">Initial release</div>
+      <ul>
+        <li>MCP server with <code>verify_document</code> tool</li>
+        <li>SOX-302 signatory control validation (Section B, controls 16–31)</li>
+        <li>DRP-2026 Section A + B coverage (controls 1–31)</li>
+        <li>Tamper-evident audit ID generation (<code>DRP-Q2-2026-*</code> format)</li>
+        <li>Claude Code and Claude Desktop installation support</li>
+        <li>Zero npm dependencies — pure Node.js built-ins only</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://github.com/TommyP949/drp-compliance-sdk">GitHub</a>
+    <a href="changelog.html">Changelog</a>
+    <a href="https://github.com/TommyP949/drp-compliance-sdk/issues">Issues</a>
+    <a href="mailto:support@drp-compliance.io">support@drp-compliance.io</a>
+  </div>
+  <div>© 2026 DRP Compliance Solutions · MIT License</div>
+</footer>
+</body>
+</html>
