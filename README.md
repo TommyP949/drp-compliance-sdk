@@ -131,6 +131,6 @@ MIT — see [LICENSE](./LICENSE).
 
 ## Support
 
-- Docs: https://docs.drp-compliance.io
+- Docs: https://tommyp949.github.io/drp-compliance-sdk/
 - Email: support@drp-compliance.io
 - Issues: https://github.com/TommyP949/drp-compliance-sdk/issues
