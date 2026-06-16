@@ -67,8 +67,8 @@ function handleVerifyDocument(args) {
 function dispatch(msg) {
   const { jsonrpc, id, method, params } = msg;
   if (jsonrpc !== '2.0') return null;
-  const ok  = r     => JSON.stringify({ jsonrpc: '2.0', id: id ?? null, result: r });
-  const err = (c,m) => JSON.stringify({ jsonrpc: '2.0', id: id ?? null, error: { code: c, message: m } });
+  const ok  = r     => JSON.stringify({ jsonrpc: '2.0', id: id != null ? id : null, result: r });
+  const err = (c,m) => JSON.stringify({ jsonrpc: '2.0', id: id != null ? id : null, error: { code: c, message: m } });
 
   switch (method) {
     case 'initialize':
@@ -76,7 +76,7 @@ function dispatch(msg) {
     case 'notifications/initialized': return null;
     case 'tools/list': return ok({ tools: TOOLS });
     case 'tools/call': {
-      const name = params?.name, args = params?.arguments ?? {};
+      const name = params && params.name, args = (params && params.arguments) || {};
       if (name === 'verify_document') return ok(handleVerifyDocument(args));
       return err(-32601, `Unknown tool: ${name}`);
     }
