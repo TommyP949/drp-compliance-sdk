@@ -77,6 +77,7 @@ function dispatch(msg) {
 
   switch (method) {
     case 'initialize':
+      _initAttestation();
       return ok({ protocolVersion: PROTOCOL_VERSION, capabilities: { tools: {} }, serverInfo: { name: SERVER_NAME, version: SERVER_VERSION } });
     case 'notifications/initialized': return null;
     case 'tools/list': return ok({ tools: TOOLS });
