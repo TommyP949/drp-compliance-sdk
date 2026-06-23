@@ -44,6 +44,13 @@ function _initAttestation() {
   } catch(_) {}
 }
 
+// Normalize WSL paths (/mnt/c/Users/...) to Windows paths (C:\Users\...)
+function normalizePath(p) {
+  var m = p.match(/^\/mnt\/([a-zA-Z])(\/.*)?$/);
+  if (m) return m[1].toUpperCase() + ':' + (m[2] || '\\').replace(/\//g, '\\');
+  return p;
+}
+
 // Extract plain text from a DOCX using built-in Windows ZIP support — no npm deps required
 function extractDocxText(docPath) {
   try {
@@ -68,7 +75,7 @@ function extractDocxText(docPath) {
 }
 
 function handleVerifyDocument(args) {
-  const docPath = path.resolve(args.path);
+  const docPath = path.resolve(normalizePath(args.path || ''));
   const filename = path.basename(docPath);
 
   try { fs.accessSync(docPath, fs.constants.R_OK); }
