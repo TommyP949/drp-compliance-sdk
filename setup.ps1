@@ -44,14 +44,27 @@ function Write-Config([string]$CfgPath) {
     Write-Host "[drp-compliance] v $CfgPath"
 }
 
-Write-Config "$env:APPDATA\Claude\claude_desktop_config.json"
+# Resolve Claude Desktop config — handles both traditional (%APPDATA%\Claude)
+# and MSIX/Store installs (%LOCALAPPDATA%\Packages\Claude_<hash>\LocalCache\Roaming\Claude)
+function Find-ClaudeConfigDir {
+    $traditional = "$env:APPDATA\Claude"
+    if (Test-Path $traditional) { return $traditional }
+    $pkg = Get-ChildItem "$env:LOCALAPPDATA\Packages" -Directory -ErrorAction SilentlyContinue |
+           Where-Object { $_.Name -like "Claude_*" } | Select-Object -First 1
+    if ($pkg) { return "$($pkg.FullName)\LocalCache\Roaming\Claude" }
+    return $traditional  # create it at the traditional path if nothing found
+}
+
+$ClaudeDir = Find-ClaudeConfigDir
+Write-Config "$ClaudeDir\claude_desktop_config.json"
+
 if (Test-Path "$env:USERPROFILE\.claude")           { Write-Config "$env:USERPROFILE\.claude\settings.json" }
 if (Test-Path "$env:USERPROFILE\.cursor")           { Write-Config "$env:USERPROFILE\.cursor\mcp.json" }
 if (Test-Path "$env:USERPROFILE\.codeium\windsurf") { Write-Config "$env:USERPROFILE\.codeium\windsurf\mcp_config.json" }
 
 Write-Host "`n[drp-compliance] Done. Fully quit and reopen your AI assistant.`n"
-Write-Host "--- Config written ---"
-Get-Content "$env:APPDATA\Claude\claude_desktop_config.json"
+Write-Host "--- Config written to $ClaudeDir ---"
+Get-Content "$ClaudeDir\claude_desktop_config.json"
 Write-Host "----------------------`n"
 
 Read-Host "Press Enter to close"
