@@ -53,12 +53,15 @@ function Write-Config([string]$CfgPath) {
 }
 
 # --- Claude Desktop ---
-# Traditional installer: %APPDATA%\Claude\
-# MSIX/Store installer:  %LOCALAPPDATA%\Packages\AnthropicPBC.ClaudeDesktop_<hash>\LocalCache\Roaming\Claude\
+# MSIX/Store install: ask Windows directly for the package family name
+# Traditional install: %APPDATA%\Claude\
 $ClaudeDir = "$env:APPDATA\Claude"
-$pkg = Get-ChildItem "$env:LOCALAPPDATA\Packages" -Directory -ErrorAction SilentlyContinue |
-       Where-Object { $_.Name -like "AnthropicPBC.ClaudeDesktop_*" } | Select-Object -First 1
-if ($pkg) { $ClaudeDir = "$($pkg.FullName)\LocalCache\Roaming\Claude" }
+$appxPkg = Get-AppxPackage -Name "*Claude*" -ErrorAction SilentlyContinue | Select-Object -First 1
+if ($appxPkg) {
+    $msixPath = "$env:LOCALAPPDATA\Packages\$($appxPkg.PackageFamilyName)\LocalCache\Roaming\Claude"
+    Write-Host "[drp-compliance] MSIX install detected: $($appxPkg.PackageFamilyName)"
+    $ClaudeDir = $msixPath
+}
 Write-Config "$ClaudeDir\claude_desktop_config.json"
 
 # --- Claude Code ---
