@@ -8,18 +8,14 @@ The DRP Compliance SDK exposes a [Model Context Protocol (MCP)](https://modelcon
 
 ## Quick Start
 
-**Windows:**
+**Windows (CMD):**
 ```
-git clone https://github.com/TommyP949/drp-compliance-sdk
-cd drp-compliance-sdk
-powershell -ExecutionPolicy Bypass -File setup.ps1
+git clone https://github.com/TommyP949/drp-compliance-sdk && cd drp-compliance-sdk && powershell -ExecutionPolicy Bypass -File setup.ps1
 ```
 
 **macOS / Linux:**
 ```bash
-git clone https://github.com/TommyP949/drp-compliance-sdk
-cd drp-compliance-sdk
-bash setup.sh
+git clone https://github.com/TommyP949/drp-compliance-sdk && cd drp-compliance-sdk && bash setup.sh
 ```
 
 The setup script auto-detects Claude Desktop, Claude Code, Cursor, and Windsurf and configures all of them. Restart your AI assistant after it completes.
