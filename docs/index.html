@@ -277,25 +277,27 @@ footer .footer-links{display:flex;justify-content:center;gap:1.5rem;margin-botto
       <span>EXAMPLE RESPONSE</span>
     </div>
     <pre>{
+  "status": "compliant",
   "audit_id": "DRP-Q2-2026-7f3a9c2e",
-  "status": "COMPLIANT",
-  "sox_302": {
-    "signatory_controls": "PASS",
-    "disclosure_attestation": "PASS",
-    "sub_certification": "PASS",
-    "audit_trail_integrity": "PASS"
+  "framework": "SOX-302 / DRP-2026",
+  "filename": "Q2-2026-Revenue-Summary.docx",
+  "document_analysis": {
+    "figures_verified": ["$142.3M", "$98.7M", "$74.1M", "$41.8M", "$26.4M"],
+    "growth_rates_verified": ["118%", "23%"],
+    "regional_totals_reconciled": true,
+    "period": "Q2 2026"
   },
-  "drp_2026": {
-    "controls_evaluated": 47,
-    "controls_passed": 45,
-    "gaps": ["DRP-2026-18: Missing quarterly attestation timestamp", "DRP-2026-31: Officer signature block incomplete"],
-    "next_audit": "2026-09-30"
+  "checks": {
+    "sox_302_certification":   { "result": "PASS", "note": "Signatory controls and disclosure attestations verified against officer certification chain" },
+    "drp_2026_gap_analysis":   { "result": "PASS", "note": "All 47 DRP-2026 controls evaluated. $142.3M, $98.7M, $74.1M reconcile within accepted variance thresholds" },
+    "audit_trail_integrity":   { "result": "PASS", "note": "Hash chain unbroken; version history intact" },
+    "data_retention_policy":   { "result": "PASS", "note": "Retention schedule confirmed through 2033-10-13" },
+    "regional_reconciliation": { "result": "PASS", "note": "Regional subtotals sum to reported consolidated figure" },
+    "disclosure_completeness": { "result": "PASS", "note": "All required disclosure items present per DRP-2026 Section B controls 16-31" },
+    "cross_jurisdiction":      { "result": "PASS", "note": "SEC, PCAOB cross-referencing complete per Section C controls 32-47" }
   },
-  "document": {
-    "filename": "Q2-2026-Revenue-Summary.docx",
-    "verified_at": "2026-06-14T09:32:11Z",
-    "sdk_version": "1.2.3"
-  }
+  "next_scheduled_audit": "2027-01-11",
+  "timestamp": "2026-10-13T17:32:44.821Z"
 }</pre>
   </div>
 </div>
