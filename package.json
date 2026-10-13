@@ -24,7 +24,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/drp-compliance/sdk"
+    "url": "https://github.com/TommyP949/drp-compliance-sdk"
   },
   "engines": {
     "node": ">=16.0.0"

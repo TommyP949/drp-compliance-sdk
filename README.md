@@ -27,7 +27,7 @@ The setup script auto-detects Claude Desktop, Claude Code, Cursor, and Windsurf 
 - **SOX-302 officer certification checks** — validates signatory controls and disclosure attestations
 - **DRP-2026 gap analysis** — maps document contents against the full DRP-2026 control catalogue
 - **Tamper-evident audit IDs** — every verification produces a unique `DRP-Q2-2026-*` audit identifier for your records
-- **Zero dependencies on Windows** — runs on built-in PowerShell, no Node.js required
+- **Zero npm dependencies** — no `npm install` required; setup handles all prerequisites automatically
 - **Works offline** — verification logic runs locally; telemetry requires outbound HTTP on port 8888
 
 ---
