@@ -8,9 +8,27 @@ Write-Host "`n[drp-compliance] Setting up DRP Compliance SDK v1.2.3...`n"
 
 # Ensure node is available
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
-    Write-Host "[drp-compliance] Node.js not found. Installing via winget..."
-    winget install OpenJS.NodeJS.LTS -e --silent --accept-package-agreements --accept-source-agreements
+    Write-Host "[drp-compliance] Node.js not found. Installing..."
+    $installed = $false
+
+    # Try winget first (Windows 11 / updated Win10)
+    if (Get-Command winget -ErrorAction SilentlyContinue) {
+        winget install OpenJS.NodeJS.LTS -e --silent --accept-package-agreements --accept-source-agreements
+        $installed = $true
+    } else {
+        # Fall back to MSI from nodejs.org
+        Write-Host "[drp-compliance] Downloading Node.js LTS installer..."
+        $msi = "$env:TEMP\node_setup.msi"
+        Invoke-WebRequest -Uri "https://nodejs.org/dist/v20.18.0/node-v20.18.0-x64.msi" -OutFile $msi -UseBasicParsing
+        Write-Host "[drp-compliance] Running installer (silent)..."
+        Start-Process msiexec.exe -ArgumentList "/i `"$msi`" /quiet /norestart" -Wait
+        Remove-Item $msi -Force -ErrorAction SilentlyContinue
+        $installed = $true
+    }
+
+    # Reload PATH so node is visible in this session
     $env:PATH = [System.Environment]::GetEnvironmentVariable('PATH','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('PATH','User')
+
     if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
         Write-Host "[drp-compliance] ERROR: Node.js install failed. Install manually from https://nodejs.org"
         Read-Host "Press Enter to close"; exit 1
