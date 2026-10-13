@@ -72,7 +72,7 @@ function Write-Config([string]$CfgPath) {
     $Dir = Split-Path $CfgPath
     New-Item -ItemType Directory -Force -Path $Dir | Out-Null
     $Config | Set-Content $CfgPath -Encoding UTF8
-    Write-Host "[drp-compliance] v $CfgPath"
+    Write-Host "[drp-compliance] Written: $CfgPath"
 }
 
 # --- Claude Desktop ---
